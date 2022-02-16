@@ -1,16 +1,30 @@
 package com.fatec.calculadorarestspring.controle;
 
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fatec.calculadorarestspring.modelo.Dado;
+import com.fatec.calculadorarestspring.modelo.Resposta;
+
 @RestController
-public class Somador {	
-	@GetMapping("/soma/{n1}/{n2}")
-	public String somar(@PathVariable String n1, @PathVariable String n2) {
-		double n1convertido = Double.parseDouble(n1);
-		double n2convertido = Double.parseDouble(n2);
+public class Somador {
+	@PostMapping("/soma")
+	public Resposta somar(@RequestBody Dado dado) {
+		double n1convertido = Double.parseDouble(dado.getN1());
+		double n2convertido = Double.parseDouble(dado.getN2());
 		Double soma = n1convertido + n2convertido;
-		return soma.toString();
+		Resposta resposta = new Resposta();
+		resposta.setResultado(soma.toString());
+		return resposta;
+	}
+	
+	@GetMapping("/dado")
+	public Dado dado() {
+		Dado dado = new Dado();
+		dado.setN1("2");
+		dado.setN2("5");
+		return dado;
 	}
 }
